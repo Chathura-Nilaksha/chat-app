@@ -1,0 +1,9 @@
+Installed dependancies-special:
+
+1.
+npm i react-router-dom
+
+2. This is how 2 dependancies installing in 1 sentence
+		1-react-toastify
+		2-firebase
+npm install react-toastify firebase
