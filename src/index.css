@@ -6,3 +6,11 @@
   box-sizing: border-box;
   font-family: Poppins;
 }
+::-webkit-scrollbar{
+  /* display: none;  or below . below said better*/
+  width: 0;
+  height: 0;
+}
+img.dot{
+  width: 15px !important;
+}

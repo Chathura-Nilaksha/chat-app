@@ -7,3 +7,24 @@ npm i react-router-dom
 ---2-react-toastify
 ---3-firebase
 npm install react-toastify firebase
+
+SEARCH NET
+1.
+importing google fonts-synthax,fontfamily property
+
+2.
+overflow-y: scroll;
+
+::-webkit-scrollbar{
+  display: none;
+}
+
+3.
+Array(12).fill("").map((item,index)=>( ))
+
+4. 
+below was index.css file.
+
+img.dot{
+  width: 15px !important;
+}
