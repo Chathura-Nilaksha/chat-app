@@ -8,6 +8,15 @@ npm i react-router-dom
 ---3-firebase
 npm install react-toastify firebase
 
+
+new things:
+1.
+<input type="file" id='image' 
+        accept='image/png, image/jpeg' 
+          hidden/>
+
+
+
 SEARCH NET
 1.
 importing google fonts-synthax,fontfamily property
@@ -28,3 +37,18 @@ below was index.css file.
 img.dot{
   width: 15px !important;
 }
+
+5.
+flex: 1;
+
+  ex- .chat-input input{
+          flex: 1;
+      }
+
+6.
+position: absolute;, relative;
+
+
+7.--------DONE----------
+border: none;
+    outline: none; 
