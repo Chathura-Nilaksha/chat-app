@@ -55,3 +55,6 @@ border: none;
 
 8.css
 transform: translateX(-50%);
+
+stopped--
+2.6-1.41.20
