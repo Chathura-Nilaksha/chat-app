@@ -52,3 +52,6 @@ position: absolute;, relative;
 7.--------DONE----------
 border: none;
     outline: none; 
+
+8.css
+transform: translateX(-50%);
