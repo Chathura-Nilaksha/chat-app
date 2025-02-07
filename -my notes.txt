@@ -15,6 +15,12 @@ new things:
         accept='image/png, image/jpeg' 
           hidden/>
 
+2. WHEN ".menu" cls get hover ".menu .sub-menu" cls has a property change (display property)
+
+.menu:hover .sub-menu{
+    display: block;
+}
+
 
 
 SEARCH NET
@@ -53,8 +59,19 @@ position: absolute;, relative;
 border: none;
     outline: none; 
 
-8.css
+8.
+css
 transform: translateX(-50%);
+
+9. 
+css- SPECIFICITY
+study below web page
+https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity
+
+10.
+
+
+
 
 stopped--
 2.6-1.41.20
