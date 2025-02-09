@@ -70,6 +70,10 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity
 
 10.
 
+    <input onChange={(e)=>setImage(e.target.files[0])} 
+            hidden 
+            type="file" accept='.png, .jpg, .jpeg' id="avatar" />
+    <img src={image? URL.createObjectURL(image) : assets.avatar_icon} alt="" />
 
 
 

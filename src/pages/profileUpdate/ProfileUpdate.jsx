@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './ProfileUpdate.css'
 import assets from '../../assets/assets'
 
 const ProfileUpdate = () => {
+    const[image, setImage] = useState(false);
   return (
     <div className='profile'>
       <div className="profile-container">
@@ -10,9 +11,9 @@ const ProfileUpdate = () => {
         <form >
           <h3>Profile Detials</h3>
           <label htmlFor="avatar">
-            <input hidden type="file" accept='.png, .jpg, .jpeg' id="avatar" />
-            <img src={assets.avatar_icon} alt="" />
-            Upload the Profile image
+            <input onChange={(e)=>setImage(e.target.files[0])} hidden type="file" accept='.png, .jpg, .jpeg' id="avatar" />
+            <img src={image? URL.createObjectURL(image) : assets.avatar_icon} alt="" />
+            Upload Profile image
           </label>
 
           <input type="text" placeholder='Your Name' required/>
@@ -21,7 +22,7 @@ const ProfileUpdate = () => {
 
         </form>
 
-        <img src={assets.logo_icon} alt="" />
+        <img className='profile-pic' src={image ? URL.createObjectURL(image) : assets.logo_icon} alt="" />
       </div>
       
     </div>
