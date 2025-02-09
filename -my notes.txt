@@ -8,6 +8,8 @@ npm i react-router-dom
 ---3-firebase
 npm install react-toastify firebase
 
+3. FIREBASE AUTHONTICATION
+
 
 new things:
 1.
@@ -78,4 +80,5 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity
 
 
 stopped--
-2.6-1.41.20
+2.6--1.41.20
+2.9--2.01.45
