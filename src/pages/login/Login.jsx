@@ -12,6 +12,11 @@ const Login = () => {
 
     const onSubmitHandler = (event)=>{
       event.preventDefault();
+      if(currState==="Sign up"){
+        signup(userName,email,password);
+      }else if(currState==="Login"){
+
+      }
     }
 
   return (
