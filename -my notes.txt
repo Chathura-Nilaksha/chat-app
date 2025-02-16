@@ -8,9 +8,27 @@ npm i react-router-dom
 ---3-firebase
 npm install react-toastify firebase
 
-3. FIREBASE AUTHONTICATION
 
-4. From FIREBASE- getAuth()
+
+
+new things:
+1.
+<input type="file" id='image' 
+        accept='image/png, image/jpeg' 
+          hidden/>
+
+2. WHEN ".menu" cls get hover ".menu .sub-menu" cls has a property change (display property)
+
+.menu:hover .sub-menu{
+    display: block;
+}
+
+3.
+<input onChange={(e)=>setUserName(e.target.value)} value={userName} ...other attributes.. />
+
+4. FIREBASE AUTHONTICATION
+
+5. From FIREBASE- getAuth()
 
       export declare function getAuth(app?: FirebaseApp): Auth;
 
@@ -20,7 +38,7 @@ npm install react-toastify firebase
       * @param app - The Firebase App.
       * @public
 
-5. From FIREBASE -- Auth interface . (Just to see only)
+6. From FIREBASE -- Auth interface . (Just to see only)
 
           /**
           * Interface representing Firebase Auth service.
@@ -176,11 +194,7 @@ npm install react-toastify firebase
 
 
 
-
-
-
-
-6. From FIREBASE- getFirestore()
+7. From FIREBASE- getFirestore()
 
       export declare function getFirestore(app: FirebaseApp): Firestore;
 
@@ -193,22 +207,93 @@ npm install react-toastify firebase
  * @returns The default {@link Firestore} instance of the provided app.
  
 
+8. From FIREBASE-- onAuthStateChanged(auth: Auth, 
+                                       nextOrObserver: NextOrObserver<User>, 
+                                       error?: ErrorFn, 
+                                       completed?: CompleteFn)
+                                          : Unsubscribe
+
+(alias) function onAuthStateChanged(auth: Auth, nextOrObserver: NextOrObserver<User>, error?: ErrorFn, completed?: CompleteFn): Unsubscribe
+import { onAuthStateChanged } from 'firebase/auth'
+
+Adds an observer for changes to the user's sign-in state.
+
+@remarks — To keep the old behavior, see onIdTokenChanged.
+
+@param auth — The Auth instance.
+
+@param nextOrObserver — callback triggered on change.
+
+@param error - Deprecated. 
+          This callback is never triggered. Errors on signing in/out can be caught in promises returned from sign-in/sign-out functions.
+
+@param completed — Deprecated. 
+          This callback is never triggered.
+
+@public
 
 
-new things:
-1.
-<input type="file" id='image' 
-        accept='image/png, image/jpeg' 
-          hidden/>
+9.
 
-2. WHEN ".menu" cls get hover ".menu .sub-menu" cls has a property change (display property)
+(alias) useNavigate(): NavigateFunction
 
-.menu:hover .sub-menu{
-    display: block;
+Returns a function that lets you navigate programmatically in the 
+browser in response to user interactions or effects.
+
+import { useNavigate } from "react-router";
+
+function SomeComponent() {
+  let navigate = useNavigate();
+  return (
+    <button
+      onClick={() => {
+        navigate(-1);
+      }}
+    />
+  );
+}
+It's often better to use redirect in actions and loaders than this hook.
+
+@category — Hooks
+
+
+above const can use as w(with below params):-
+
+navigate(to: To, options?: NavigateOptions)
+          : void | Promise<void>
+
+or 
+
+navigate(delta: number)
+          : void | Promise<void>
+
+/**
+ * Below is the interface for the navigate() function returned from useNavigate().
+ */
+
+interface NavigateFunction {
+    (to: To, options?: NavigateOptions): void | Promise<void>;
+    (delta: number): void | Promise<void>;
 }
 
-3.
-<input onChange={(e)=>setUserName(e.target.value)} value={userName} ...other attributes.. />
+interface NavigateOptions {
+    /** Replace the current entry in the history stack instead of pushing a new one */
+    replace?: boolean;
+    /** Adds persistent client side routing state to the next location */
+    state?: any;
+    /** If you are using {@link https://api.reactrouter.com/v7/functions/react_router.ScrollRestoration.html <ScrollRestoration>}, prevent the scroll position from being reset to the top of the window when navigating */
+    preventScrollReset?: boolean;
+    /** Defines the relative path behavior for the link. "route" will use the route hierarchy so ".." will remove all URL segments of the current route pattern while "path" will use the URL path so ".." will remove one URL segment. */
+    relative?: RelativeRoutingType;
+    /** Wraps the initial state update for this navigation in a {@link https://react.dev/reference/react-dom/flushSync ReactDOM.flushSync} call instead of the default {@link https://react.dev/reference/react/startTransition React.startTransition} */
+    flushSync?: boolean;
+    /** Enables a {@link https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API View Transition} for this navigation by wrapping the final state update in `document.startViewTransition()`. If you need to apply specific styles for this view transition, you will also need to leverage the {@link https://api.reactrouter.com/v7/functions/react_router.useViewTransitionState.html useViewTransitionState()} hook.  */
+    viewTransition?: boolean;
+}
+
+/**
+
+
 
 
 
