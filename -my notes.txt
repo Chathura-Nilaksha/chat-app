@@ -1,4 +1,4 @@
-Installed dependancies-special:
+Installed dependancies-special:---------------------------------
 
 1.----react-router-dom
 npm i react-router-dom
@@ -11,7 +11,7 @@ npm install react-toastify firebase
 
 
 
-new things:
+NEW THINGS:------------------------------------------------------
 1.
 <input type="file" id='image' 
         accept='image/png, image/jpeg' 
@@ -232,6 +232,16 @@ Adds an observer for changes to the user's sign-in state.
 
 @public
 
+Below was this app typed code--
+
+        onAuthStateChanged(auth, async (user)=> {
+                if(user){
+                  navigate('/chat')
+                }else{
+                  navigate('/')
+                }
+              })
+
 
 9.
 
@@ -294,10 +304,28 @@ interface NavigateOptions {
 /**
 
 
+10. From FIREBASE:-  signOut(auth: Auth): Promise<void>
+
+    export declare function signOut(auth: Auth): Promise<void>;
+
+ * Signs out the current user.
+ 
+ * @remarks
+ * This method is not supported by {@link Auth} instances created with a
+ * {@link @firebase/app#FirebaseServerApp}.
+ 
+ * @param auth - The {@link Auth} instance.
+ 
+ * @public
 
 
 
-SEARCH NET
+
+
+
+
+
+SEARCH NET:--------------------------------------------------------
 1.
 importing google fonts-synthax,fontfamily property
 
