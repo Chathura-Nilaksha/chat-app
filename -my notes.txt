@@ -28,7 +28,9 @@ NEW THINGS:------------------------------------------------------
 
 4. FIREBASE AUTHONTICATION
 
-5. From FIREBASE- getAuth()
+5. F1
+
+From FIREBASE- getAuth()
 
       export declare function getAuth(app?: FirebaseApp): Auth;
 
@@ -38,7 +40,10 @@ NEW THINGS:------------------------------------------------------
       * @param app - The Firebase App.
       * @public
 
-6. From FIREBASE -- Auth interface . (Just to see only)
+
+6. F2
+
+From FIREBASE -- Auth interface . (Just to see only)
 
           /**
           * Interface representing Firebase Auth service.
@@ -194,7 +199,9 @@ NEW THINGS:------------------------------------------------------
 
 
 
-7. From FIREBASE- getFirestore()
+7. F3
+
+From FIREBASE- getFirestore()
 
       export declare function getFirestore(app: FirebaseApp): Firestore;
 
@@ -207,13 +214,19 @@ NEW THINGS:------------------------------------------------------
  * @returns The default {@link Firestore} instance of the provided app.
  
 
-8. From FIREBASE-- onAuthStateChanged(auth: Auth, 
-                                       nextOrObserver: NextOrObserver<User>, 
-                                       error?: ErrorFn, 
-                                       completed?: CompleteFn)
+8. F4 
+
+From FIREBASE-- onAuthStateChanged(auth: Auth, 
+                                      nextOrObserver: NextOrObserver<User>, 
+                                      error?: ErrorFn, 
+                                      completed?: CompleteFn)
                                           : Unsubscribe
 
-(alias) function onAuthStateChanged(auth: Auth, nextOrObserver: NextOrObserver<User>, error?: ErrorFn, completed?: CompleteFn): Unsubscribe
+
+(alias) function onAuthStateChanged(auth: Auth, 
+                                    nextOrObserver: NextOrObserver<User>, 
+                                    error?: ErrorFn, completed?: CompleteFn)
+                                          : Unsubscribe
 import { onAuthStateChanged } from 'firebase/auth'
 
 Adds an observer for changes to the user's sign-in state.
@@ -221,16 +234,25 @@ Adds an observer for changes to the user's sign-in state.
 @remarks — To keep the old behavior, see onIdTokenChanged.
 
 @param auth — The Auth instance.
-
-@param nextOrObserver — callback triggered on change.
-
+@param nextOrObserver — event callback triggered on change. (DISCUS AFTER THIS)
 @param error - Deprecated. 
-          This callback is never triggered. Errors on signing in/out can be caught in promises returned from sign-in/sign-out functions.
-
+          This callback is never triggered. 
+          Errors on signing in/out can be caught in promises returned from 
+            sign-in/sign-out functions.
 @param completed — Deprecated. 
           This callback is never triggered.
 
 @public
+
+
+/**
+ * Type definition for an event callback.
+ * @privateRemarks TODO(avolkovi): should we consolidate with Subscribe<T> since we're changing the API anyway?
+ * @public
+ */
+export declare type NextOrObserver<T> = NextFn<T | null> | Observer<T | null>;
+/**
+
 
 Below was this app typed code--
 
@@ -304,7 +326,9 @@ interface NavigateOptions {
 /**
 
 
-10. From FIREBASE:-  signOut(auth: Auth): Promise<void>
+F5. 
+
+From FIREBASE:-  signOut(auth: Auth): Promise<void>
 
     export declare function signOut(auth: Auth): Promise<void>;
 
@@ -317,6 +341,57 @@ interface NavigateOptions {
  * @param auth - The {@link Auth} instance.
  
  * @public
+
+
+10.
+
+Making a " Context component ". 
+
+Below Context component.
+
+  export const AppContext = createContext(); // Using "AppContext" as the name of 
+                                                the component.
+
+
+  const AppContextProvider = (props)=>{
+
+      const [chatData, setChatData] = useState(null);
+
+      const loadUserData = async ()=>{
+      }
+
+      const sendingItems = {
+          chatData,
+          setChatData,
+          loadUserData
+      }
+      
+      return (
+          <AppContext.Provider value={sendingItems}>
+              {props.children}
+          </AppContext.Provider>
+      )
+  }
+
+  export default AppContextProvider;
+
+
+Below "<AppContextProvider>" tag put where it should be accessed. Here below form 
+"main.jsx" in this project.
+
+      createRoot(document.getElementById('root')).render(
+        <BrowserRouter>
+          <AppContextProvider>
+            <App />
+          </AppContextProvider>
+        </BrowserRouter>
+      )
+
+
+
+
+
+
 
 
 
@@ -383,3 +458,5 @@ stopped--
 2.6--1.41.20
 2.9--2.01.45
 2.13--2.22.45
+2.18--2.29.39 -- now rewatching- now need to study onAuthStateChanged()
+                    and then again start rewatch from 2.29.39

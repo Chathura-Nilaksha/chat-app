@@ -10,21 +10,21 @@ import { AppContext } from './context/AppContext'
 
 const App = () => {
 
-    const navigate = useNavigate();
-    const {loadUserData} = useContext(AppContext);
+  const navigate = useNavigate();
+  const { loadUserData } = useContext(AppContext);
 
-    useEffect( ()=>{
-      onAuthStateChanged(auth, async (user)=> {
-        if(user){
-          navigate('/chat');
-          console.log(user);
-          await loadUserData(user.uid);
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        navigate('/chat');
+        console.log(user);
+        await loadUserData(user.uid);
 
-        }else{
-          navigate('/')
-        }
-      })
-    },[]);
+      } else {
+        navigate('/')
+      }
+    })
+  }, []);
 
   return (
     <>
