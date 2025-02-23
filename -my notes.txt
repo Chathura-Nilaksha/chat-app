@@ -11,26 +11,15 @@ npm install react-toastify firebase
 
 
 
-NEW THINGS:------------------------------------------------------
-1.
-<input type="file" id='image' 
-        accept='image/png, image/jpeg' 
-          hidden/>
 
-2. WHEN ".menu" cls get hover ".menu .sub-menu" cls has a property change (display property)
+NEW THINGS:-------------- IN ---- FIREBASE ----------------------------------------
 
-.menu:hover .sub-menu{
-    display: block;
-}
+F0 --
 
-3.
-<input onChange={(e)=>setUserName(e.target.value)} value={userName} ...other attributes.. />
+  FIREBASE AUTHONTICATION
 
-4. FIREBASE AUTHONTICATION
 
-5. F1
-
-From FIREBASE- getAuth()
+F1 -- getAuth()
 
       export declare function getAuth(app?: FirebaseApp): Auth;
 
@@ -41,9 +30,8 @@ From FIREBASE- getAuth()
       * @public
 
 
-6. F2
 
-From FIREBASE -- Auth interface . (Just to see only)
+F2 -- Auth interface . (Just to see only)
 
           /**
           * Interface representing Firebase Auth service.
@@ -198,10 +186,7 @@ From FIREBASE -- Auth interface . (Just to see only)
           }
 
 
-
-7. F3
-
-From FIREBASE- getFirestore()
+F3 -- getFirestore()
 
       export declare function getFirestore(app: FirebaseApp): Firestore;
 
@@ -214,19 +199,36 @@ From FIREBASE- getFirestore()
  * @returns The default {@link Firestore} instance of the provided app.
  
 
-8. F4 
 
-From FIREBASE-- onAuthStateChanged(auth: Auth, 
-                                      nextOrObserver: NextOrObserver<User>, 
-                                      error?: ErrorFn, 
-                                      completed?: CompleteFn)
-                                          : Unsubscribe
+
+
+F5 -- signOut(auth: Auth): Promise<void>
+
+    export declare function signOut(auth: Auth): Promise<void>;
+
+ * Signs out the current user.
+ 
+ * @remarks
+ * This method is not supported by {@link Auth} instances created with a
+ * {@link @firebase/app#FirebaseServerApp}.
+ 
+ * @param auth - The {@link Auth} instance.
+ 
+ * @public
+===========================================
+
+F6 -- onAuthStateChanged(auth: Auth, 
+                         nextOrObserver: NextOrObserver<User>, 
+                         error?: ErrorFn, 
+                         completed?: CompleteFn)
+                             : Unsubscribe
 
 
 (alias) function onAuthStateChanged(auth: Auth, 
                                     nextOrObserver: NextOrObserver<User>, 
-                                    error?: ErrorFn, completed?: CompleteFn)
-                                          : Unsubscribe
+                                    error?: ErrorFn, 
+                                    completed?: CompleteFn)
+                                        : Unsubscribe
 import { onAuthStateChanged } from 'firebase/auth'
 
 Adds an observer for changes to the user's sign-in state.
@@ -245,27 +247,289 @@ Adds an observer for changes to the user's sign-in state.
 @public
 
 
-/**
+
+BELOW --> "NextOrObserver<T>":
+
  * Type definition for an event callback.
- * @privateRemarks TODO(avolkovi): should we consolidate with Subscribe<T> since we're changing the API anyway?
+ * @privateRemarks TODO(avolkovi): should we consolidate with Subscribe<T> since 
+                                   we're changing the API anyway?
  * @public
- */
+ 
 export declare type NextOrObserver<T> = NextFn<T | null> | Observer<T | null>;
-/**
 
 
-Below was this app typed code--
+
+BELOW --> "NextFn<T>":
+
+export declare type NextFn<T> = (value: T) => void;
+
+
+
+BELOW --> "Observer<T>":
+
+export declare interface Observer<T> {
+    next: NextFn<T>;
+    error: ErrorFn;
+    complete: CompleteFn;
+}
+
+
+
+BELOW --> is the codes that in this app:
 
         onAuthStateChanged(auth, async (user)=> {
-                if(user){
-                  navigate('/chat')
-                }else{
-                  navigate('/')
-                }
-              })
+                                                  if(user){
+                                                    navigate('/chat')
+                                                  }else{
+                                                    navigate('/')
+                                                  }
+                                                }
+                          )
+================================================
+
+F7 -- doc (firestore: Firestore, 
+           path: string, 
+           ...pathSegments: string[])
+                : DocumentReference <DocumentData, DocumentData>
+
+  
+    export declare function doc(firestore: Firestore, 
+                                path: string, 
+                                ...pathSegments: string[])
+                                      : DocumentReference <DocumentData, DocumentData>;
+
+ * Gets a `DocumentReference` instance that refers to the document at the
+   specified absolute path.
+ 
+ * @param firestore - A reference to the root `Firestore` instance.
+ * @param path - A slash-separated path to a document.
+ * @param pathSegments - Additional path segments that will be applied relative
+                         to the first argument.
+
+ * @throws If the final path has an odd number of segments and does not point to
+           a document.
+
+ * @returns The `DocumentReference` instance.
+    BELOW is about "DocumentReference cls".
+
+      class DocumentReference <AppModelType = DocumentData, 
+                                DbModelType extends DocumentData = DocumentData>
+
+            - A DocumentReference refers to a document location in a 
+            Firestore database and can be used to write, read, or listen to 
+            the location. 
+            - The document at the referenced location may or may not exist.
+
+export declare class DocumentReference <AppModelType = DocumentData, 
+                                        DbModelType extends DocumentData = DocumentData> {
+    
+     * If provided, the `FirestoreDataConverter` associated with this instance.
+    
+    readonly converter: FirestoreDataConverter<AppModelType, DbModelType> | null;
+
+    /** The type of this Firestore reference. */
+
+    readonly type = "document";
+    
+     * The {@link Firestore} instance the document is in.
+     * This is useful for performing transactions, for example.
+     */
+    readonly firestore: Firestore;
+    private constructor();
+    /**
+     * The document's identifier within its collection.
+     */
+     get id(): string;
+    /**
+     * A string representing the path of the referenced document (relative
+     * to the root of the database).
+     */
+    get path(): string;
+    /**
+     * The collection this `DocumentReference` belongs to.
+     */
+    get parent(): CollectionReference<AppModelType, DbModelType>;
+    /**
+     * Applies a custom data converter to this `DocumentReference`, allowing you
+     * to use your own custom model objects with Firestore. When you call {@link
+     * @firebase/firestore/lite#(setDoc:1)}, {@link @firebase/firestore/lite#getDoc}, etc. with the returned `DocumentReference`
+     * instance, the provided converter will convert between Firestore data of
+     * type `NewDbModelType` and your custom type `NewAppModelType`.
+     *
+     * @param converter - Converts objects to and from Firestore.
+     * @returns A `DocumentReference` that uses the provided converter.
+     */
+    withConverter<NewAppModelType, NewDbModelType extends DocumentData = DocumentData>(converter: FirestoreDataConverter<NewAppModelType, NewDbModelType>): DocumentReference<NewAppModelType, NewDbModelType>;
+    /**
+    * Removes the current converter.
+     *
+     * @param converter - `null` removes the current converter.
+     * @returns A `DocumentReference<DocumentData, DocumentData>` that does not
+     * use a converter.
+     */
+    withConverter(converter: null): DocumentReference<DocumentData, DocumentData>;
+}
+
+================================
 
 
-9.
+F8 -- getDoc(reference: DocumentReference <AppModelType, DbModelType>)
+          : Promise < DocumentSnapshot <AppModelType, DbModelType> >
+
+export declare function getDoc <AppModelType, DbModelType extends DocumentData>
+                                (reference: DocumentReference <AppModelType, DbModelType> )
+                                    : Promise <DocumentSnapshot<AppModelType, DbModelType>>;
+
+ * Reads the document referred to by this `DocumentReference`.
+ 
+ * Note: `getDoc()` attempts to provide up-to-date data when possible by waiting
+   for data from the server, but it may return cached data or fail if you are
+   offline and the server cannot be reached. To specify this behavior, invoke
+   {@link getDocFromCache} or {@link getDocFromServer}.
+ 
+ * @param reference - The reference of the document to fetch.
+
+ * @returns A Promise resolved with a `DocumentSnapshot` containing the
+   current document contents.
+==================================
+
+
+F9 -- Data() : An object | undefined    {This method is in "DocumentSnapshot" class.}
+   -- data(options?: SnapshotOptions): AppModelType | undefined
+
+     * Retrieves all fields in the document as an `Object`. Returns `undefined` if
+       the document doesn't exist.
+     
+     * By default, `serverTimestamp()` values that have not yet been
+       set to their final value will be returned as `null`. You can override
+       this by passing an options object.
+     
+     * @param options - An options object to configure how data is retrieved from
+                        the snapshot (for example the desired behavior for server 
+                        timestamps that have not yet been set to their final value).
+
+     * @returns - An `Object` containing all fields in the document or `undefined` if
+                  the document doesn't exist.
+    
+
+
+BELOW: --> is "DocumentSnapshot" class 
+
+ * A `DocumentSnapshot` contains data read from a document in your Firestore
+ * database. The data can be extracted with `.data()` or `.get(<field>)` to
+ * get a specific field.
+ *
+ * For a `DocumentSnapshot` that points to a non-existing document, any data
+ * access will return 'undefined'. You can use the `exists()` method to
+ * explicitly verify a document's existence.
+ */
+export declare class DocumentSnapshot<AppModelType = DocumentData, DbModelType extends DocumentData = DocumentData> {
+    /**
+     *  Metadata about the `DocumentSnapshot`, including information about its
+     *  source and local modifications.
+     */
+    readonly metadata: SnapshotMetadata;
+    protected constructor();
+    /**
+     * Returns whether or not the data exists. True if the document exists.
+     
+    exists(): this is QueryDocumentSnapshot<AppModelType, DbModelType>;
+    
+
+     * Retrieves all fields in the document as an `Object`. Returns `undefined` if
+       the document doesn't exist.
+     
+     * By default, `serverTimestamp()` values that have not yet been
+       set to their final value will be returned as `null`. You can override
+       this by passing an options object.
+     
+     * @param options - An options object to configure how data is retrieved from
+                        the snapshot (for example the desired behavior for server 
+                        timestamps that have not yet been set to their final value).
+
+     * @returns - An `Object` containing all fields in the document or `undefined` if
+                  the document doesn't exist.
+    
+    data(options?: SnapshotOptions): AppModelType | undefined;
+
+    
+     * Retrieves the field specified by `fieldPath`. Returns `undefined` if the
+     * document or field doesn't exist.
+     *
+     * By default, a `serverTimestamp()` that has not yet been set to
+     * its final value will be returned as `null`. You can override this by
+     * passing an options object.
+     *
+     * @param fieldPath - The path (for example 'foo' or 'foo.bar') to a specific
+     * field.
+     * @param options - An options object to configure how the field is retrieved
+     * from the snapshot (for example the desired behavior for server timestamps
+     * that have not yet been set to their final value).
+     * @returns The data at the specified field location or undefined if no such
+     * field exists in the document.
+     */
+    get(fieldPath: string | FieldPath, options?: SnapshotOptions): any;
+    /**
+     * Property of the `DocumentSnapshot` that provides the document's ID.
+    */
+    get id(): string;
+    /**
+     * The `DocumentReference` for the document included in the `DocumentSnapshot`.
+    */
+    get ref(): DocumentReference<AppModelType, DbModelType>;
+}
+==========================
+
+
+F10 -- updateDoc <AppModelType, DbModelType extends DocumentData> 
+                      ( reference: DocumentReference <AppModelType, DbModelType>, 
+                        data: UpdateData <DbModelType> )
+                                : Promise <void>
+
+export declare function updateDoc <AppModelType, DbModelType extends DocumentData> (reference: DocumentReference <AppModelType, DbModelType>, 
+                                                                                    data: UpdateData <DbModelType>)
+      : Promise <void>;
+
+ * Updates fields in the document referred to by the specified
+   `DocumentReference`. The update will fail if applied to a document that does
+   not exist.
+ 
+ * @param reference - A reference to the document to update.
+ * @param data - An object containing the fields and values with which to
+                 update the document. 
+                 Fields can contain dots to reference nested fields within 
+                 the document.
+
+ * @returns A `Promise` resolved once the data has been successfully written
+            to the backend (note that it won't resolve while you're offline).
+ ============================
+
+
+F11 --
+
+
+
+
+NEW THINGS:-------------- GENERAL ----------------------------------------
+
+1.
+<input type="file" id='image' 
+        accept='image/png, image/jpeg' 
+          hidden/>
+
+2. WHEN ".menu" cls get hover ".menu .sub-menu" cls has a property change (display property)
+
+.menu:hover .sub-menu{
+    display: block;
+}
+
+
+3.
+
+<input onChange={(e)=>setUserName(e.target.value)} value={userName} ...other attributes.. />
+
+
+4.
 
 (alias) useNavigate(): NavigateFunction
 
@@ -326,28 +590,13 @@ interface NavigateOptions {
 /**
 
 
-F5. 
 
-From FIREBASE:-  signOut(auth: Auth): Promise<void>
+5.
 
-    export declare function signOut(auth: Auth): Promise<void>;
+Making a "Context component". 
 
- * Signs out the current user.
- 
- * @remarks
- * This method is not supported by {@link Auth} instances created with a
- * {@link @firebase/app#FirebaseServerApp}.
- 
- * @param auth - The {@link Auth} instance.
- 
- * @public
+Below the "Context component".
 
-
-10.
-
-Making a " Context component ". 
-
-Below Context component.
 
   export const AppContext = createContext(); // Using "AppContext" as the name of 
                                                 the component.
@@ -387,6 +636,156 @@ Below "<AppContextProvider>" tag put where it should be accessed. Here below for
         </BrowserRouter>
       )
 
+
+Below is how to use that "Context" items when required in a component.
+
+      const { loadUserData } = useContext(AppContext);
+
+
+
+6. -- now(): number
+
+  Returns the number of milliseconds elapsed since midnight, 
+  January 1, 1970 Universal Coordinated Time (UTC). 
+
+
+
+BELOW --> is "DateConstructor" interface:
+
+interface DateConstructor {
+    new (): Date;
+    new (value: number | string): Date;
+    /**
+     * Creates a new Date.
+     * @param year The full year designation is required for cross-century date accuracy. If year is between 0 and 99 is used, then year is assumed to be 1900 + year.
+     * @param monthIndex The month as a number between 0 and 11 (January to December).
+     * @param date The date as a number between 1 and 31.
+     * @param hours Must be supplied if minutes is supplied. A number from 0 to 23 (midnight to 11pm) that specifies the hour.
+     * @param minutes Must be supplied if seconds is supplied. A number from 0 to 59 that specifies the minutes.
+     * @param seconds Must be supplied if milliseconds is supplied. A number from 0 to 59 that specifies the seconds.
+     * @param ms A number from 0 to 999 that specifies the milliseconds.
+     */
+    new (year: number, monthIndex: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): Date;
+    (): string;
+    readonly prototype: Date;
+    /**
+     * Parses a string containing a date, and returns the number of milliseconds between that date and midnight, January 1, 1970.
+     * @param s A date string
+     */
+    parse(s: string): number;
+    /**
+     * Returns the number of milliseconds between midnight, January 1, 1970 Universal Coordinated Time (UTC) (or GMT) and the specified date.
+     * @param year The full year designation is required for cross-century date accuracy. If year is between 0 and 99 is used, then year is assumed to be 1900 + year.
+     * @param monthIndex The month as a number between 0 and 11 (January to December).
+     * @param date The date as a number between 1 and 31.
+     * @param hours Must be supplied if minutes is supplied. A number from 0 to 23 (midnight to 11pm) that specifies the hour.
+     * @param minutes Must be supplied if seconds is supplied. A number from 0 to 59 that specifies the minutes.
+     * @param seconds Must be supplied if milliseconds is supplied. A number from 0 to 59 that specifies the seconds.
+     * @param ms A number from 0 to 999 that specifies the milliseconds.
+     */
+    UTC(year: number, monthIndex: number, date?: number, hours?: number, minutes?: number, seconds?: number, ms?: number): number;
+    /** Returns the number of milliseconds elapsed since midnight, January 1, 1970 Universal Coordinated Time (UTC). */
+    now(): number;
+}
+
+declare var Date: DateConstructor;
+==========================================
+
+7 -- setInterval ( callback: (args: void) => void, 
+                     ms?: number )
+                         : NodeJS.Timeout
+
+  function setInterval <TArgs extends any[]> ( callback: (...args: TArgs) => void,
+                                               ms?: number,
+                                               ...args: TArgs)
+
+                                                     : NodeJS.Timeout; 
+
+  [  BELOW-->From MOZILLA 
+
+    The setInterval() method of the Window interface repeatedly calls a function 
+    or executes a code snippet, with a fixed time delay between each call.
+
+    This method returns an interval ID which uniquely identifies the interval, 
+    so you can remove it later by calling clearInterval().
+
+    Syntax -js    
+
+    setInterval(code)
+    setInterval(code, delay)
+
+    setInterval(func)
+    setInterval(func, delay)
+    setInterval(func, delay, arg1)
+    setInterval(func, delay, arg1, arg2)
+    setInterval(func, delay, arg1, arg2, /* …, */ argN)
+
+
+    Parameters
+
+    func
+
+        A function to be executed every delay milliseconds. The first execution happens after delay milliseconds.
+    code
+
+        An optional syntax allows you to include a string instead of a function, which is compiled and executed every delay milliseconds. This syntax is not recommended for the same reasons that make using eval() a security risk.
+    delay Optional
+
+        The time, in milliseconds (thousandths of a second), the timer should delay in between executions of the specified function or code. Defaults to 0 if not specified. See Delay restrictions below for details on the permitted range of delay values.
+    arg1, …, argN Optional
+
+        Additional arguments which are passed through to the function specified by func once the timer expires.
+
+
+    Return value
+
+    The returned intervalID is a numeric, non-zero value which identifies 
+    the timer created by the call to setInterval(); this value can be passed to 
+    clearInterval() to cancel the interval.
+
+    It may be helpful to be aware that setInterval() and setTimeout() share the 
+    same pool of IDs, and that clearInterval() and clearTimeout() can technically 
+    be used interchangeably. For clarity, however, you should try to always match 
+    them to avoid confusion when maintaining your code.
+
+
+    Note: The delay argument is converted to a signed 32-bit integer. 
+          This effectively limits delay to 2147483647 ms, roughly 24.8 days, 
+          since it's specified as a signed integer in the IDL.
+
+
+
+
+  ]  
+
+         * Schedules repeated execution of `callback` every `delay` milliseconds.
+         
+         * When `delay` is larger than `2147483647` or less than `1`, the `delay` 
+           will be set to `1`. Non-integer delays are truncated to an integer.
+         
+         * If `callback` is not a function, a `TypeError` will be thrown.
+         
+         * This method has a custom variant for promises that is available 
+           using `timersPromises.setInterval()`.
+
+         * @since v0.0.1
+
+         * @param callback The function to call when the timer elapses.
+         * @param [delay=1] The number of milliseconds to wait before calling 
+                            the `callback`.
+         * @param args Optional arguments to pass when the `callback` is called.
+
+         * @return for use with {@link clearInterval}
+         
+                 
+
+  function setInterval(callback: (args: void) => void, ms?: number)
+
+                                      : NodeJS.Timeout;    
+                  
+        // util.promisify no rest args compability
+        // eslint-disable-next-line @typescript-eslint/no-invalid-void-type        
+==================================== 
 
 
 
@@ -454,9 +853,14 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity
 
 
 
-stopped--
+
+
+
+stopped:------------------------------------------------
+
 2.6--1.41.20
 2.9--2.01.45
 2.13--2.22.45
 2.18--2.29.39 -- now rewatching- now need to study onAuthStateChanged()
-                    and then again start rewatch from 2.29.39
+                    and then again start rewatch from 2.29.39 
+2.21-- 2.40.10 -- now rewatching-start by studying data() F9
